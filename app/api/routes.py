@@ -15,12 +15,21 @@ async def process_query(query: QueryInput, db: Session = Depends(get_db)):
         response = await llm_service.process_query(db, query)
         return response
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        if "402" in str(e):
+            raise HTTPException(status_code=503, detail="LLM service unavailable: API key issue or quota exceeded")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 @router.get("/history", response_model=list[QueryResponse])
 async def get_history(db: Session = Depends(get_db)):
-    return db_service.get_query_history(db)
+    try:
+        return db_service.get_query_history(db)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve history: {str(e)}")
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check():
     return HealthResponse(status="healthy")
+
+@router.get("/")
+async def root():
+    return {"message": "Welcome to the Personal Finance Q&A System API. Visit /docs for API documentation."}
