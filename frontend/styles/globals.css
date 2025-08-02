@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-accent text-primary;
+  font-family: 'Inter', sans-serif;
+}
+
+.markdown {
+  @apply prose prose-sm max-w-none;
+  @apply text-primary;
+}
+
+.markdown ul, .markdown ol {
+  @apply pl-6 my-2;
+}
+
+.markdown li {
+  @apply mb-1;
+}
+
+@media (max-width: 640px) {
+  .markdown {
+    @apply prose-xs;
+  }
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-lg;
+  }
+  .lg\:w-1\/4 {
+    @apply w-full;
+  }
+  .lg\:w-3\/4 {
+    @apply w-full;
+  }
+  .lg\:pl-6 {
+    @apply pl-0;
+  }
+  .lg\:max-w-xs {
+    @apply max-w-full;
+  }
+  .lg\:ml-\[25\%\] {
+    @apply ml-0;
+  }
+  .lg\:mr-4 {
+    @apply mr-0;
+  }
+  .fixed.bottom-0 {
+    @apply relative;
+  }
+}

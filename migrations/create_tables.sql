@@ -3,6 +3,7 @@ CREATE TABLE queries (
     question TEXT NOT NULL,
     answer TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    user_id UUID, -- Optional for future user authentication
+    user_id UUID, -- Optional for future authentication
+    chat_id UUID NOT NULL DEFAULT gen_random_uuid(),
     CONSTRAINT question_not_empty CHECK (question <> '')
 );

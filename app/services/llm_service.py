@@ -30,9 +30,12 @@ class LLMService:
             response = model.generate_content(prompt, generation_config={"max_output_tokens": 500, "temperature": 0.7})
             answer = response.text
 
+            # Use provided chat_id or generate a new one
+            chat_id = query.chat_id or uuid4()
+
             # Save query and response to database
             query_id = uuid4()
-            db_query = Query(id=query_id, question=query.question, answer=answer)
+            db_query = Query(id=query_id, question=query.question, answer=answer, chat_id=chat_id)
             db.add(db_query)
             db.commit()
             db.refresh(db_query)
@@ -42,6 +45,7 @@ class LLMService:
                 question=db_query.question,
                 answer=db_query.answer,
                 created_at=db_query.created_at,
+                chat_id=db_query.chat_id,
             )
         except Exception as e:
             logger.error(f"Gemini API error: {e}")
